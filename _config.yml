@@ -1,0 +1,54 @@
+title: Ashutosh Chaudhary
+description: My Personal Blog
+author: Ashutosh Chaudhary
+github: https://github.com/codeasashu
+about: Freelance web, apps developer
+disqus_shortname: aboutashu
+google_analytics: UA-72862926-1
+
+collections:
+  project:
+    output: true
+    permalink: /project/:path/
+
+urls:
+    - text: About Me
+      url: /about/
+    - text: Projects
+      url: /projects/
+    - text: Resume
+      url: https://drive.google.com/open?id=0B3Xfz0jTV0TnTnZtN0pBVVpoUVU
+    - text: Github
+      url: https://github.com/codeasashu
+    - text: XML Feed
+      url: /feed.xml
+      
+social:
+    - icon: fa-facebook
+      link: http://facebook.com/ashutosh2k12
+    - icon: fa-skype
+      link: skype:ashu2k111
+    - icon: fa-twitter
+      link: http://twitter.com/216ashutosh
+    - icon: fa-linkedin
+      link: https://in.linkedin.com/in/codeasashu
+    - icon: fa-stack-exchange
+      link: http://stackexchange.com/users/1155850/ashutosh
+
+share:
+  twitter_username: 216ashutosh
+  fb_appid: 1159707894060864
+
+
+enableTags: true
+tagarray: []
+
+url: "http://aboutashu.com"
+baseurl: ""
+paginate: 20
+per_page: 20
+paginate_path: "/page:num/"
+markdown: kramdown
+gems:
+  - jekyll-paginate
+  - jekyll-gist

@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="shortcut icon" href="/static/img/favicon.ico" />
+        <title>Getting started with Serverless and AWS - Ashutosh Chaudhary</title>
+        <meta name="author" content="Ashutosh Chaudhary" />
+        <meta name="description" content="Getting started with Serverless and AWS" />
+        <meta name="keywords" content="Getting started with Serverless and AWS, Ashutosh Chaudhary, serverless, aws" />
+
+        <meta content="1159707894060864" property="fb:app_id">
+        <meta content="Ashutosh Chaudhary" property="og:site_name">
+        
+          <meta content="Getting started with Serverless and AWS" property="og:title">
+        
+        
+          <meta content="article" property="og:type">
+        
+        
+          <meta content="My Personal Blog" property="og:description">
+        
+        
+          <meta content="http://localhost:4000/get-started-serverless-aws/" property="og:url">
+        
+        
+          <meta content="2018-08-10T13:53:38+09:00" property="article:published_time">
+          <meta content="http://localhost:4000/about/" property="article:author">
+        
+        
+          <meta content="http://aboutashu.com/static/img/logo-high-resolution.png" property="og:image">
+        
+        
+          
+          <meta content="serverless" property="article:section">
+          
+        
+        
+          
+          <meta content="serverless" property="article:tag">
+          
+          <meta content="aws" property="article:tag">
+          
+        
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:site" content="@216ashutosh">
+        <meta name="twitter:creator" content="@216ashutosh">
+        
+          <meta name="twitter:title" content="Getting started with Serverless and AWS">
+        
+        
+          <meta name="twitter:url" content="http://localhost:4000/get-started-serverless-aws/">
+        
+        
+          <meta name="twitter:description" content="My Personal Blog">
+        
+        
+
+        <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml">
+        <link rel="stylesheet" href="https://use.fontawesome.com/74dfc6cf47.css">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/static/css/syntax.css">
+
+        <!-- Bootstrap core CSS -->
+        <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Fonts -->
+        <link href="//fonts.googleapis.com/css?family=Roboto+Condensed:400,300italic,300,400italic,700&amp;subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+        <!-- Custom CSS -->        
+        <link rel="stylesheet" href="/static/css/thickbox.css">
+        <link rel="stylesheet" href="/static/css/super-search.css">
+        <link rel="stylesheet" href="/static/css/projects.css">
+        <link rel="stylesheet" href="/static/css/main.css">
+        <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72862926-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9412805248701621",
+    enable_page_level_ads: true
+  });
+</script>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="col-sm-3 sidenav">
+                <a href="/"><img id="about" src="/static/img/avatar.jpg" height="75px" width="75px" /></a>
+                <h1 class="author-name">Ashutosh Chaudhary</h1>
+                
+                <div id="about">
+                    Freelance web, apps developer
+                </div>
+                
+
+                <div class="social">
+	<ul>
+		
+			<li><a href="http://facebook.com/ashutosh2k12" target="_blank"><i class="fa fa-facebook"></i></a></li>
+		
+			<li><a href="skype:ashu2k111" target="_blank"><i class="fa fa-skype"></i></a></li>
+		
+			<li><a href="http://twitter.com/216ashutosh" target="_blank"><i class="fa fa-twitter"></i></a></li>
+		
+			<li><a href="https://in.linkedin.com/in/codeasashu" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+		
+			<li><a href="http://stackexchange.com/users/1155850/ashutosh" target="_blank"><i class="fa fa-stack-exchange"></i></a></li>
+		
+	</ul>
+</div>
+               
+                <div class="search" id="js-search">
+                  <input type="text" placeholder="(sitemap)~$ type to search" class="search__input form-control" id="js-search__input">
+                  <ul class="search__results" id="js-search__results"></ul>
+                </div>
+                <hr />
+                <div class="navigation">
+                <strong>Navigation</strong><br />
+                    &raquo; <a href="/">Home</a> <br />
+                
+                    &raquo; <a class="about" href="/about/">About Me</a><br />
+                
+                    &raquo; <a class="about" href="/projects/">Projects</a><br />
+                
+                    &raquo; <a class="about" href="https://drive.google.com/open?id=0B3Xfz0jTV0TnTnZtN0pBVVpoUVU">Resume</a><br />
+                
+                    &raquo; <a class="about" href="https://github.com/codeasashu">Github</a><br />
+                
+                    &raquo; <a class="about" href="/feed.xml">XML Feed</a><br />
+                
+                </div>
+            </div>
+
+            <div class="col-sm-8 col-offset-1">
+                
+
+
+
+
+
+
+
+<h1>Getting started with Serverless and AWS</h1>
+<span class="time">10 Aug 2018</span>
+
+<span class="categories">
+    &raquo; <a href="/category/serverless">serverless</a>, <a href="/category/aws">aws</a>
+</span>
+
+
+
+<div class="content">
+    <div class="post"><h1 id="serverless-setup-with-aws">Serverless setup with AWS</h1>
+
+<p>Setting up a completely automated serverless setup on AWS can be a very hefty task. It will require a lot of efforts, configuring various services, keeping a note of what to link where, IAM roles etc. This not only requires a lot of research but consumes a lot of time as well.</p>
+
+<p>Serverless solves all the problem of configurations, linking and creating roles and permissions, letting you focus on business logic and getting things done in few keystrokes.</p>
+
+<p>In this tutorial, I will be creating a sample “hello world” program in <em>Lambda</em> (NodeJS), using <em>API Gateway</em> which will output the results on browser.  In the next tutorial, I will help setting up dynamodb so you can have a datastore. We can also use RDS.</p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<ol>
+  <li>An AWS account</li>
+  <li>Any local machine (I use linux)</li>
+</ol>
+
+<h2 id="setting-up-aws">Setting up AWS</h2>
+
+<p>Setting up AWS is the easy part. You just have to goto <a href="http://console.aws.amazon.com">console.aws.amazon.com</a> and signup for an account. You have to link a credit card for verification. Its free for an year so you won’t be charged and test out things for sake of this tutorial.</p>
+
+<p>Once account setup is done, go to IAM section and create a new user, making the access type <code class="highlighter-rouge">programmatic</code> (NOTE: it is going to provide you with access key id and secret which will be used later on).</p>
+
+<p>Next screen will take you to add permission to this user, where you can create a new group or choose from any existing one. Click <em>Create Group</em>  to begin, which will bring a popup asking for name and roles. Since you are new, create a new group with any name of your choice. <strong>Select Administrator access</strong> as role for this user since it will be easiest route to go. Hit <em>Create Group</em> button.</p>
+
+<p>Move on to next step <em>Review</em> where you can tally if user have the administrator access and programmatic authentication type. Finally, hit <em>Create User</em> which will suffice and complete the process.</p>
+
+<p>You will be presented with the accesskey and secret which you should copy down somewhere safe. There is also a <em>download</em> option to download them in csv.</p>
+<blockquote>
+  <p>ETA: 5 mins</p>
+</blockquote>
+
+<h2 id="setting-up-serverless">Setting up Serverless</h2>
+
+<p>We are going to need following AWS entities to get things rolling:</p>
+
+<ul>
+  <li>Lambda (for processing)</li>
+  <li>API Gateway (for API)</li>
+  <li>CloudWatch (for logging)</li>
+  <li>IAM roles (for permissions)</li>
+</ul>
+
+<p>This will be enough to get a presentable state of our demo up and running in minutes. Lets get things going.</p>
+
+<p>All serverless need is a config files which will determine how to configure things on AWS.
+To do so, First, it needs to know AWS account and region so it can use it to deploy applications.</p>
+
+<h3 id="1-setting-up-local-aws-credentials">1. Setting up local aws credentials</h3>
+
+<p><strong>Manual Way</strong></p>
+
+<ol>
+  <li>Create a directory .aws in your home directory (~/.aws on *nix, C:\Users\USER_NAME\.aws).</li>
+  <li>Create config file in .aws with following contents
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[default]
+output = json
+region = us-west-2
+</code></pre></div>    </div>
+  </li>
+  <li>Create credentials file in .aws with following contents
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[default]
+aws_access_key_id = &lt;your-access-key-id&gt;
+aws_secret_access_key = &lt;your-secret-access-key&gt;
+</code></pre></div>    </div>
+
+    <p>Read More: https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/setup-credentials.html</p>
+  </li>
+</ol>
+
+<p>** Automated Way**</p>
+
+<ol>
+  <li>Download and set AWS CLI on your machine. <a href="https://docs.aws.amazon.com/lambda/latest/dg/setup-awscli.html">Instructions here</a></li>
+  <li>run <code class="highlighter-rouge">aws configure</code> and answer the prompt questions.</li>
+</ol>
+
+<h3 id="creating-serverless-configuration-file">Creating Serverless configuration file</h3>
+
+<ol>
+  <li>Create a project directory and enter it</li>
+  <li>Create a file called <code class="highlighter-rouge">serverless.yml</code></li>
+  <li>Enter following content:</li>
+</ol>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">service</span><span class="pi">:</span> <span class="s">serverless-helloworld</span>
+<span class="na">frameworkVersion</span><span class="pi">:</span> <span class="s2">"</span><span class="s">&gt;=1.1.0</span><span class="nv"> </span><span class="s">&lt;2.0.0"</span>
+
+<span class="na">provider</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">aws</span>
+  <span class="na">runtime</span><span class="pi">:</span> <span class="s">nodejs8.10</span>
+  <span class="na">environment</span><span class="pi">:</span>
+    <span class="na">SERVICE_NAME</span><span class="pi">:</span> <span class="s">${self:service}</span>
+    <span class="na">WORLD</span><span class="pi">:</span> <span class="s1">'</span><span class="s">world'</span>
+
+<span class="na">functions</span><span class="pi">:</span>
+  <span class="na">helloworld</span><span class="pi">:</span>
+    <span class="na">handler</span><span class="pi">:</span> <span class="s">hello/index.hello</span>
+    <span class="na">events</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">http</span><span class="pi">:</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">hello</span>
+          <span class="na">method</span><span class="pi">:</span> <span class="s">get</span>
+          <span class="na">cors</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div></div>
+
+<p>Although, pretty much self explanatory, let me summarize this for you.</p>
+
+<p><code class="highlighter-rouge">provider</code> key tells serverless what aws providers are we going to use and which versions of them, such as lambda runner, dynamodb etc. This is kind of versioning aspect of the</p>
+
+<p>This is a good place to set <strong>environment variables</strong> too. For instance, we are setting up <em>SERVICE_NAME</em>, <em>WORLD</em> as variables, which can be accessed inside our lambda node functions as <code class="highlighter-rouge">process.env.SERVICE_NAME</code>, <code class="highlighter-rouge">process.env.WORLD</code>.</p>
+
+<p>Serverless supports <em>event per function</em> kinda configuration. Hence, we write the lambda handlers and the events on which it is going to respond.
+Various types of events are supported such as API Gateway, S3, SQS, CloudWatch etc. Since we are going to process as soon as we get an API request, we will be using API gateway event.</p>
+
+<p>We can respond to same kind of process in response to various kind of events. For ex- You may want to write logs if file is uploaded to s3, but also when certain API request is being made, same lambda handler can be used to handle both the events. For now, we will only respond to API event(HTTP).</p>
+
+<p>Hence, the basic configuration may look like:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">...</span>
+
+<span class="na">functions</span><span class="pi">:</span>
+  <span class="s">&lt;custom-name&gt;</span><span class="pi">:</span>
+    <span class="na">handler</span><span class="pi">:</span> <span class="s">&lt;file-location-without-js-suffix&gt;.&lt;method-name&gt;</span>
+    <span class="na">events</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">&lt;event-name&gt;</span><span class="pi">:</span>
+          <span class="s">&lt;event-configurations&gt;</span>
+      <span class="pi">-</span> <span class="s">&lt;another-event-name&gt;</span><span class="pi">:</span>
+          <span class="s">&lt;event-configurations&gt;</span>
+</code></pre></div></div>
+
+<p>Serverless configures events</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">http</span><span class="pi">:</span>
+    <span class="na">path</span><span class="pi">:</span> <span class="s">hello</span>
+    <span class="na">method</span><span class="pi">:</span> <span class="s">get</span>
+    <span class="na">cors</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div></div>
+<p>This tells the event type will be http and values provides the configurations, such as for which path the event should be triggered etc. You got this gist.</p>
+
+<blockquote>
+  <p>ETA: 10-15 mins</p>
+</blockquote>
+
+<h3 id="writing-actual-code">Writing actual code</h3>
+
+<p>Lets again look at the configuration, specifically this part:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="na">helloworld</span><span class="pi">:</span>
+    <span class="na">handler</span><span class="pi">:</span> <span class="s">hello/index.hello</span>
+    <span class="na">events</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">http</span><span class="pi">:</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">hello</span>
+          <span class="na">method</span><span class="pi">:</span> <span class="s">get</span>
+          <span class="na">cors</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div></div>
+
+<p>This can be translated to:</p>
+<blockquote>
+  <p>Create a file in the <code class="highlighter-rouge">hello</code> directory (relative to config file), called <code class="highlighter-rouge">index.js</code> which will have the function <code class="highlighter-rouge">hello</code> to handle the request and will provide the response.</p>
+</blockquote>
+
+<p>Lets write some code.</p>
+
+<p>NOTE: Since we are using node 8.9.0 (check config again), we can use ES6 features.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// index.js</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">context</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="c1">// Getting query string parameters. It looks something like {a: 'b', c: 1}</span>
+  <span class="kd">const</span> <span class="nx">params</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">queryStringParameters</span> <span class="p">?</span> <span class="nx">event</span><span class="p">.</span><span class="nx">queryStringParameters</span> <span class="p">:</span> <span class="p">{}</span>
+  <span class="kd">const</span> <span class="nx">body</span> <span class="o">=</span> <span class="s1">'Hello '</span> <span class="o">+</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">WORLD</span>
+  <span class="kd">const</span> <span class="nx">responseType</span> <span class="o">=</span> <span class="p">{</span><span class="na">success</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span> <span class="na">client_error</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span> <span class="na">server_error</span><span class="p">:</span> <span class="mi">500</span><span class="p">};</span>
+
+  <span class="c1">// Success response</span>
+  <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">statusCode</span><span class="p">:</span> <span class="nx">responseType</span><span class="p">.</span><span class="nx">success</span><span class="p">,</span>
+    <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span><span class="nx">body</span><span class="p">,</span> <span class="nx">params</span><span class="p">})</span>
+  <span class="p">});</span>
+
+  <span class="c1">// Or Error response like</span>
+  <span class="cm">/*
+  //let error = new TypeError('some error')
+  callback(error, {
+    statusCode: responseType.client_error,
+    body: JSON.stringify({ error: 'Any error message' }),
+  });
+  */</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Thats it. You are nearly ready to deploy all this. Just execute the following command and hit <code class="highlighter-rouge">Enter</code> key to deploy.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>serverless deploy
+
+<span class="c"># or</span>
+
+<span class="nv">$ </span>sls deploy
+</code></pre></div></div>
+
+<p>Before making ourselves much happier and comfortable, lets first see what are we getting as input in our lambda handler and what and how are we outputting.</p>
+
+<p>Starting with the first line:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">context</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="c1">// shorthand for:</span>
+  <span class="c1">// module.exports = function (event, context, callback) {</span>
+  <span class="c1">// ...</span>
+</code></pre></div></div>
+
+<p>We get three parameters to lambda handler (for nodejs):</p>
+
+<ol>
+  <li>event: Provides event sources and variables attached to any of <a href="https://docs.aws.amazon.com/lambda/latest/dg/invoking-lambda-function.html">AWS Event Sources</a></li>
+  <li>context: This provides lambda context so that you can extract out any piece of information related to this function such as configurations, runtime operations etc. <a href="https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-context.html">Read more</a></li>
+  <li>callback: An optional parameter, which will be called after event loop becomes empty. In layman terms, this is the place which will be called “finally” and this is where your response should be.</li>
+</ol>
+
+<p>Lets dive straightaway into the code now.</p>
+
+<p>Getting query parameters of an Gateway request is quite easy. You can get them using <code class="highlighter-rouge">event.queryStringParameters</code>. <code class="highlighter-rouge">event</code> also provides other necessary info related to requests such as headers. Here is how a sample event object looks like:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/test/hello"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"headers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"Accept"</span><span class="p">:</span><span class="w"> </span><span class="s2">"application/json;q=0.9,image/webp,*/*;q=0.8"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Accept-Encoding"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gzip, deflate, lzma, sdch, br"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Accept-Language"</span><span class="p">:</span><span class="w"> </span><span class="s2">"en-US,en;q=0.8"</span><span class="p">,</span><span class="w">
+    </span><span class="err">...</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"pathParameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"proxy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hello"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"requestContext"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"accountId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123456789012"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"resourceId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"us4z18"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"stage"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dev"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"requestId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"41b45ea3-70b5-11e6-b7bd-69b5aaebc7d9"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"identity"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="err">...</span><span class="w">
+      </span><span class="s2">"userAgent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.82 Safari/537.36 OPR/39.0.2256.48"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"resourcePath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/{proxy+}"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"httpMethod"</span><span class="p">:</span><span class="w"> </span><span class="s2">"GET"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"apiId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xxxx"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"resource"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/{proxy+}"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"httpMethod"</span><span class="p">:</span><span class="w"> </span><span class="s2">"GET"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"queryStringParameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"a"</span><span class="p">:</span><span class="w"> </span><span class="s2">"b"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+  </span><span class="err">...</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Setting response body is also quite easy. You just have to pass it as <strong>second parameter</strong> of <code class="highlighter-rouge">callback</code> function. This is because the <strong>First parameter</strong> is reserved for <code class="highlighter-rouge">Error</code> and should be <code class="highlighter-rouge">null</code> if you want to indicate a success response.</p>
+
+<p>I think its very straighforward. Moving on…</p>
+
+<h3 id="deploying-services">Deploying services</h3>
+
+<p>Like I’ve said, deployment is easy. Just execute <code class="highlighter-rouge">serverless deploy</code> or <code class="highlighter-rouge">sls deploy</code> command and serverless will create the necessary cloudformation stack, upload the package to s3 and cloudformation will take care of creating the necessary architecture. You can sit and relax and have a coffee instead.</p>
+
+<p>It hardly took 1 hour to get things up and running and having a response, which might’ve took you more if you’re planning to go manual way.</p>
+
+<p>Hope you’ve liked my efforts. Will keep posting new articles and more on architectures and orchestration. Comment below if you need any help.</p>
+</div>
+
+    
+	
+    
+    
+
+
+    <div class="share-page">
+    Share this on &rarr;
+ <a href="https://twitter.com/share" class="twitter-share-button" data-via="216ashutosh">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<!-- Google + -->
+<div class="g-plus" data-action="share" data-annotation="bubble"></div>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+<!-- Facebook -->
+<div class="fb-share-button" data-href="http://localhost:4000/get-started-serverless-aws/" data-layout="button_count" style="position: relative; top: -8px; left: 3px;"></div>
+</div>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId=1159707894060864";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+</div>
+
+
+
+
+    
+    
+        
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+            
+        
+    
+
+
+
+<div class="PageNavigation">
+  
+    <a class="prev" href="/2016/06/21/implement-xmpp-chat-client-android-part-2.html">&laquo; Implement Xmpp Chat Client Android Part 2</a>
+  
+  
+</div>
+
+
+<div class="disqus-comments">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* <![CDATA[ */
+
+        var disqus_shortname = "aboutashu";
+        var disqus_identifier = "http://localhost:4000_Getting started with Serverless and AWS";
+        var disqus_title = "Getting started with Serverless and AWS";
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    /* ]]> */
+    </script>
+</div>
+
+                <footer>
+                    &copy; Ashutosh Chaudhary
+                     
+                    - <a href="https://github.com/codeasashu">https://github.com/codeasashu</a> - Powered by Jekyll.
+                    
+                </footer>
+                <div align="center">
+                    <!-- hcz-jekyll -->
+                  <ins class="adsbygoogle"
+                       style="display:block"
+                       data-ad-client="ca-pub-0776433630785969"
+                       data-ad-slot="9690958902"
+                       data-ad-format="auto"></ins>
+                  <script>
+                  (adsbygoogle = window.adsbygoogle || []).push({});
+                  </script>
+                </div>
+            </div><!-- end /.col-sm-8 -->
+        </div><!-- end /.container -->
+
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        <!--
+        <script src="/static/js/jquery.min.js"></script>
+        -->
+        <script src="/static/js/thickbox-compressed.js"></script>
+        <script src="/static/js/bootstrap.min.js"></script>
+        <script src="/static/js/super-search.js"></script>
+        <script src="/static/js/main.js"></script>
+        <script src="/static/js/projects.js"></script>
+    </body>
+</html>

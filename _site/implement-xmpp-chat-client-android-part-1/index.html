@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="shortcut icon" href="/static/img/favicon.ico" />
+        <title>Implement XMPP chat client in Android &#8211; Part 1 - Ashutosh Chaudhary</title>
+        <meta name="author" content="Ashutosh Chaudhary" />
+        <meta name="description" content="Implement XMPP chat client in Android &#8211; Part 1" />
+        <meta name="keywords" content="Implement XMPP chat client in Android &#8211; Part 1, Ashutosh Chaudhary, Uncategorized" />
+
+        <meta content="1159707894060864" property="fb:app_id">
+        <meta content="Ashutosh Chaudhary" property="og:site_name">
+        
+          <meta content="Implement XMPP chat client in Android &#8211; Part 1" property="og:title">
+        
+        
+          <meta content="article" property="og:type">
+        
+        
+          <meta content="My Personal Blog" property="og:description">
+        
+        
+          <meta content="http://localhost:4000/implement-xmpp-chat-client-android-part-1/" property="og:url">
+        
+        
+          <meta content="2016-05-01T17:39:37+09:00" property="article:published_time">
+          <meta content="http://localhost:4000/about/" property="article:author">
+        
+        
+          <meta content="http://aboutashu.com/static/img/logo-high-resolution.png" property="og:image">
+        
+        
+          
+          <meta content="Uncategorized" property="article:section">
+          
+        
+        
+          
+        
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:site" content="@216ashutosh">
+        <meta name="twitter:creator" content="@216ashutosh">
+        
+          <meta name="twitter:title" content="Implement XMPP chat client in Android &#8211; Part 1">
+        
+        
+          <meta name="twitter:url" content="http://localhost:4000/implement-xmpp-chat-client-android-part-1/">
+        
+        
+          <meta name="twitter:description" content="My Personal Blog">
+        
+        
+
+        <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml">
+        <link rel="stylesheet" href="https://use.fontawesome.com/74dfc6cf47.css">
+
+        <!-- syntax highlighting CSS -->
+        <link rel="stylesheet" href="/static/css/syntax.css">
+
+        <!-- Bootstrap core CSS -->
+        <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Fonts -->
+        <link href="//fonts.googleapis.com/css?family=Roboto+Condensed:400,300italic,300,400italic,700&amp;subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+        <!-- Custom CSS -->        
+        <link rel="stylesheet" href="/static/css/thickbox.css">
+        <link rel="stylesheet" href="/static/css/super-search.css">
+        <link rel="stylesheet" href="/static/css/projects.css">
+        <link rel="stylesheet" href="/static/css/main.css">
+        <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72862926-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9412805248701621",
+    enable_page_level_ads: true
+  });
+</script>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="col-sm-3 sidenav">
+                <a href="/"><img id="about" src="/static/img/avatar.jpg" height="75px" width="75px" /></a>
+                <h1 class="author-name">Ashutosh Chaudhary</h1>
+                
+                <div id="about">
+                    Freelance web, apps developer
+                </div>
+                
+
+                <div class="social">
+	<ul>
+		
+			<li><a href="http://facebook.com/ashutosh2k12" target="_blank"><i class="fa fa-facebook"></i></a></li>
+		
+			<li><a href="skype:ashu2k111" target="_blank"><i class="fa fa-skype"></i></a></li>
+		
+			<li><a href="http://twitter.com/216ashutosh" target="_blank"><i class="fa fa-twitter"></i></a></li>
+		
+			<li><a href="https://in.linkedin.com/in/codeasashu" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+		
+			<li><a href="http://stackexchange.com/users/1155850/ashutosh" target="_blank"><i class="fa fa-stack-exchange"></i></a></li>
+		
+	</ul>
+</div>
+               
+                <div class="search" id="js-search">
+                  <input type="text" placeholder="(sitemap)~$ type to search" class="search__input form-control" id="js-search__input">
+                  <ul class="search__results" id="js-search__results"></ul>
+                </div>
+                <hr />
+                <div class="navigation">
+                <strong>Navigation</strong><br />
+                    &raquo; <a href="/">Home</a> <br />
+                
+                    &raquo; <a class="about" href="/about/">About Me</a><br />
+                
+                    &raquo; <a class="about" href="/projects/">Projects</a><br />
+                
+                    &raquo; <a class="about" href="https://drive.google.com/open?id=0B3Xfz0jTV0TnTnZtN0pBVVpoUVU">Resume</a><br />
+                
+                    &raquo; <a class="about" href="https://github.com/codeasashu">Github</a><br />
+                
+                    &raquo; <a class="about" href="/feed.xml">XML Feed</a><br />
+                
+                </div>
+            </div>
+
+            <div class="col-sm-8 col-offset-1">
+                
+
+
+
+
+
+
+
+<h1>Implement XMPP chat client in Android &#8211; Part 1</h1>
+<span class="time">01 May 2016</span>
+
+<span class="categories">
+    &raquo; <a href="/category/Uncategorized">Uncategorized</a>
+</span>
+
+
+<span class="part-series">
+    &raquo; This posts is part of series -  <a href="http://localhost:4000/implement-xmpp-chat-client-android/">Implement XMPP chat client in Android</a>  
+</span>
+
+
+<div class="content">
+    <div class="post"><h2 id="part-1---xmpp-basics">Part 1 - XMPP Basics</h2>
+
+<p>In the <a href="http://aboutashu.com/blog/xmpp-chat-server/">last post</a> of this series, I talked about setting up XMPP based chat server, using ejabberd. In this post, I will be talking about how to implement XMPP chat client in android and let two users talk to each other. After reading this post series, you’ll be able to</p>
+
+<ol>
+  <li>Implement chat system such as whatsapp in your own android app</li>
+  <li>Allow yourself to chat with online users (roasters)</li>
+  <li>Making the chat as service so that chat messages still come through even while app is in background</li>
+</ol>
+
+<p>Since it would be too long to explain everything within a single post, I am going to explain part by part code structure and basics of XMPP here.</p>
+
+<h2 id="xmpp-client">XMPP Client</h2>
+
+<p>XMPP Clients is a software or application which allows you to connect to XMPP servers for instant messaging with other people. Simple enough!! If you are a frequent internet user, you must’ve used one to many XMPP clients such as pidgin, gtalk, Yahoo! IM etc. which allows you to send Instant Message to other users you are connected to. What we will do this in post is to make one such client in android.</p>
+
+<h2 id="what-you-will-need">What You will need</h2>
+
+<ol>
+  <li>An android IDE for app development. While I prefer <a href="http://developer.android.com/sdk/index.html">Android Studio</a>, <a href="https://eclipse.org/">Eclipse</a> also does the job.</li>
+  <li>Decent Working internet.</li>
+</ol>
+
+<h2 id="starting-the-project">Starting the Project</h2>
+
+<p>Lets begin!!</p>
+
+<h4 id="creating-the-project">Creating the project:</h4>
+
+<p>Create a blank project in android studio. Once you get to editor screen, add following dependencies to your app specific <code class="highlighter-rouge">build.gradle</code>:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>compile 'org.igniterealtime.smack:smack-android-extensions:4.1.0'
+compile 'org.igniterealtime.smack:smack-tcp:4.1.0'
+compile 'com.google.code.gson:gson:2.6.2'
+</code></pre></div></div>
+
+<p>The first two lines are mandatory for getting smack to work on android. The third line (about gson) allows you to convert raw messages in GSON format. Since we will be sending messages in GSON format, I added it to my needs. Check out <a href="https://github.com/ashutosh2k12/XmppDemo/blob/master/app/build.gradle">build.gradle</a> of my app to get an idea.</p>
+
+<h2 id="basics">Basics</h2>
+
+<p>Before diving straight into the code, lets understand few things about XMPP and in what manner are we going to implement them.</p>
+
+<h4 id="what-is-xmpp">What is XMPP?</h4>
+
+<p>XMPP is basically a set of protocols (or rules) to allow communication based on XML. Thus, whenever you send a message, or your presence (available, unavailable etc.) to some other user (or server), it goes out in XML format, like this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;presence&gt;
+  &lt;show&gt;dnd&lt;/show&gt;
+&lt;/presence&gt;
+</code></pre></div></div>
+
+<p>But we don’t have to go threw this right now. You just need to know that whenever you are seeing someone online, or sending a message, the client communicates with each other in this mannar. Read more about these <a href="https://xmpp.org/rfcs/rfc3921.html">here</a></p>
+
+<h4 id="jabber-id">Jabber ID</h4>
+
+<p>Jabber Id or simply JID is a unique ID (just like your username on facebook) which helps you recognize in XMPP environments. Jabber ID is usually in the format <code class="highlighter-rouge">username@domain</code>. Sometimes, you may see your JID in form of <code class="highlighter-rouge">username@domain/resource</code> .Resource is nothing but a string representing your chat environment.</p>
+
+<p><code class="highlighter-rouge">username@domain</code> sometimes is reffered to as <em>Bare JID</em> while <code class="highlighter-rouge">username@domain/resource</code> as <em>Full JID</em>.</p>
+
+<h4 id="roasters">Roasters</h4>
+
+<p>Just like you have facebook friends, that only they can check out your shared items, XMPP too does have this security thing of its own kind. Whenever you gets connected to a XMPP server, few things about you travels along to server. So, for example, whenever you login to your GTalk, or pidgin, you instantly gets this “green”  button to show you are online. You also see your last status that you’ve put up. you see your friendlist and online friends from them.</p>
+
+<p>The information associated with you, as soon as you login to any XMPP client, includes mainly:</p>
+
+<ol>
+  <li>Your presence information (wether you are available or not)</li>
+  <li>Your status</li>
+  <li>Whom you are subscribed to (and who subscribed to you)</li>
+</ol>
+
+<p>These informations are kept on server in database. XMPP have certain security features that decides who is going to see those informations. For ex, if you are subscribed to User A, and user A is also subscribed to you, then you both can see each other’s presences. However, if only user A has subscribed to you, only you can see his presence.</p>
+
+<p><strong>Roasters</strong> are people (or group of people) who are subscribed to you (or you are subscribed to them). They are like your friends on facebook, with limited access depending upon the subscription status between you both.</p>
+
+<p>To put it simply, the online users that you see in your gtalk are roasters. Any user whom you have added as contact on  XMPP clients are roasters.</p>
+
+<h4 id="subscriptions">Subscriptions</h4>
+
+<p>Subscriptions is one way of saying <em>sending friend requests</em>. Just like, when you send someone a friend request on facebook, you subscribe to someone on XMPP. You subscribe to someone by sending them a subscription presence packet to their JID. While I will begin with code, I will show you how to send a subscription packets and receive one. Thus, subscription state exists between two users.</p>
+
+<p>For sake of simplicity, you just need to know that in order to make someone friends on XMPP, or allowing someone to make you a friend, you need subscription.</p>
+
+<p>Subscriptions have 4 modes: <code class="highlighter-rouge">subscribe_none</code>, <code class="highlighter-rouge">subscribe_to</code>, <code class="highlighter-rouge">subscribe_from</code>, <code class="highlighter-rouge">subscribe_both</code>.</p>
+
+<ol>
+  <li><strong>subscribe_none</strong> - When you are not subscribed in any way to a given user.</li>
+  <li><strong>subscribe_to</strong> - When only you are subscribed to a given user (one way).</li>
+  <li><strong>subscribe_from</strong> - When you are not subscribed in any way to a given user.</li>
+  <li><strong>subscribe_both</strong> - When you are not subscribed in any way to a given user.</li>
+</ol>
+
+</div>
+
+    
+	 
+    <hr />
+    <div class="panel">
+        <div class="panel-body">
+        <h4> This posts is part of series -  <a href="http://localhost:4000/implement-xmpp-chat-client-android/">Implement XMPP chat client in Android</a>   </h4>
+        <ul id="post-series-list">
+    
+         <li> <a href="http://localhost:4000/xmpp-chat-server/">Creating XMPP chat server</a> </li>       <li> Implement XMPP chat client in Android &#8211; Part 1 </li>  
+     </ul> </div> </div> 
+
+
+    <div class="share-page">
+    Share this on &rarr;
+ <a href="https://twitter.com/share" class="twitter-share-button" data-via="216ashutosh">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<!-- Google + -->
+<div class="g-plus" data-action="share" data-annotation="bubble"></div>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+<!-- Facebook -->
+<div class="fb-share-button" data-href="http://localhost:4000/implement-xmpp-chat-client-android-part-1/" data-layout="button_count" style="position: relative; top: -8px; left: 3px;"></div>
+</div>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId=1159707894060864";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+</div>
+
+
+
+
+    
+    
+        
+            
+        
+    
+        
+            
+        
+    
+
+    
+    
+
+    
+    
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+    
+
+    
+    
+        
+            
+                
+                <div class="panel-body">
+                <h4>Related Posts</h4>
+                <ul>
+                
+                <li class="relatedPost">
+                    <a href="http://localhost:4000/implement-xmpp-chat-client-android/">Implement XMPP chat client in Android</a>
+                    
+                        (Categories: <a href="/category/Uncategorized">Uncategorized</a>)
+                    
+                </li>
+                
+                
+            
+        
+    
+
+    
+    
+        
+            
+        
+    
+
+    
+    
+        
+            
+                
+                <li class="relatedPost">
+                    <a href="http://localhost:4000/xmpp-chat-server/">Creating XMPP chat server</a>
+                    
+                        (Categories: <a href="/category/Uncategorized">Uncategorized</a>)
+                    
+                </li>
+                
+                
+            
+        
+    
+
+    
+    
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+    
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+    
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+    
+
+
+    </ul>
+    </div>
+
+
+<div class="PageNavigation">
+  
+    <a class="prev" href="/xmpp-chat-server/">&laquo; Creating XMPP chat server</a>
+  
+  
+    <a class="next" href="/implement-xmpp-chat-client-android/">Implement XMPP chat client in Android &raquo;</a>
+  
+</div>
+
+
+<div class="disqus-comments">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* <![CDATA[ */
+
+        var disqus_shortname = "aboutashu";
+        var disqus_identifier = "http://localhost:4000_Implement XMPP chat client in Android &#8211; Part 1";
+        var disqus_title = "Implement XMPP chat client in Android &#8211; Part 1";
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    /* ]]> */
+    </script>
+</div>
+
+                <footer>
+                    &copy; Ashutosh Chaudhary
+                     
+                    - <a href="https://github.com/codeasashu">https://github.com/codeasashu</a> - Powered by Jekyll.
+                    
+                </footer>
+                <div align="center">
+                    <!-- hcz-jekyll -->
+                  <ins class="adsbygoogle"
+                       style="display:block"
+                       data-ad-client="ca-pub-0776433630785969"
+                       data-ad-slot="9690958902"
+                       data-ad-format="auto"></ins>
+                  <script>
+                  (adsbygoogle = window.adsbygoogle || []).push({});
+                  </script>
+                </div>
+            </div><!-- end /.col-sm-8 -->
+        </div><!-- end /.container -->
+
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        <!--
+        <script src="/static/js/jquery.min.js"></script>
+        -->
+        <script src="/static/js/thickbox-compressed.js"></script>
+        <script src="/static/js/bootstrap.min.js"></script>
+        <script src="/static/js/super-search.js"></script>
+        <script src="/static/js/main.js"></script>
+        <script src="/static/js/projects.js"></script>
+    </body>
+</html>
