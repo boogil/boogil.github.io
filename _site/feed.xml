@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Ashutosh Chaudhary</title>
-    <description>My Personal Blog</description>
+    <title>Gil Kim</title>
+    <description>Blog</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 30 Sep 2018 18:19:36 +0900</pubDate>
-    <lastBuildDate>Sun, 30 Sep 2018 18:19:36 +0900</lastBuildDate>
+    <pubDate>Sun, 30 Sep 2018 22:08:28 +0900</pubDate>
+    <lastBuildDate>Sun, 30 Sep 2018 22:08:28 +0900</lastBuildDate>
     <generator>Jekyll v3.7.4</generator>
     
       <item>
@@ -292,6 +292,286 @@ Various types of events are supported such as API Gateway, S3, SQS, CloudWatch e
       </item>
     
       <item>
+        <title>Javascript에서 Prototype이란?</title>
+        <description>&lt;!-- ---
+layout: post
+title: Javascript에서 Prototype이란?
+date:   2018-04-22 11:02:38 +0900
+categories: blog jekyll github
+excerpt: Javascript에서 객체지향적인 기능을 담당하는 Prototype에 대해서 설명합니다.
+author: Gil Kim
+--- --&gt;
+&lt;p&gt;초급 웹 개발자의 경우는 Javascript에서 변수와 function 정도만 알고 사용하고 있을겁니다. (저도 그러했습니다.)&lt;br /&gt;
+그런데 라이브러리를 참조하거나, 코드 검색중에 간결한 자바스크립트 문장을 발견하고, 또는 function을 선언하고 변수를 사용하는 것을 발견한 적이 있었을 것입니다.
+&lt;br /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;1-prototype의-사용-예를-살펴봅시다&quot;&gt;1. Prototype의 사용 예를 살펴봅시다.&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;1.&lt;/strong&gt; 외부 라이브러리를 참조해서 그 코드를 까봤더니 이런 코드도 있다.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;  &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;backgroundCycle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;..&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;코드&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;..&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;strong&gt;2.&lt;/strong&gt; 자바스크립트 함수를 사용하는데 매개변수 자리에 넣지않는 경우도 있다.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;  &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;duplicator&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;2-자바스크립트는-객체지향이-가능한가&quot;&gt;2. 자바스크립트는 객체지향이 가능한가?&lt;/h3&gt;
+
+&lt;p&gt;필자가 주로 사용하는 자바언어는 클래스를 선언하고, 상속을 받는 객체지향 언어입니다.&lt;br /&gt;
+자바스크립트의 function을 사용을 많이 해왔지만, 클래스를 선언하고 상속을 하는 코드를 본적이 없습니다.
+&lt;br /&gt;하지만 결론적으로 말하자면 자바스트립트도 &lt;strong&gt;객체지향 언어&lt;/strong&gt; 의 형태로 만들 수 있습니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;3-프로토타입이란&quot;&gt;3. 프로토타입이란?&lt;/h3&gt;
+&lt;p&gt;프로토타입은 객체지향 언어에서 사용하는 클래스와 비슷합니다. &lt;br /&gt;
+메모리를 할당받은 실 객체라고 보시면 됩니다.&lt;br /&gt;
+자바에서도 최상위 객체가 Object 인것처럼, 자바스크립트에서도 최상위 객체는 Object입니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;다음의 예제를 통해 더 자세히 알아보겠습니다.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://tech-knot.github.io/assets/javascript_prototype_2.PNG&quot; alt=&quot;예제1&quot; /&gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Person이라는 함수를 선언하였습니다. 함수를 선언함과 동시에 Person 프로토타입 객체가 만들어 집니다.&lt;/li&gt;
+  &lt;li&gt;Person의 프로토타입 객체에 eyes와 nose라는 변수를 선언하였습니다.&lt;/li&gt;
+  &lt;li&gt;kim 이라는 Person 객체를 생성하였습니다.&lt;/li&gt;
+  &lt;li&gt;kim의 __proto__ 와  Person의 prototype을 출력해보면 같은 결과가 출력됨을 확인할 수 있습니다.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;strong&gt;구조를 살펴보면 다음과 같습니다.&lt;/strong&gt;
+&lt;img src=&quot;https://tech-knot.github.io/assets/javascript_prototype_1.PNG&quot; alt=&quot;예제2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Person function을 선언하면, Person프로토타입을 생성하게 됩니다.&lt;br /&gt;
+kim도 Person 객체이기 때문에 같은 프로토타입을 가지게 됩니다. (Person 프로토타입을 상속받은 것과 비슷합니다.)&lt;br /&gt;
+Person프로토타입의 상위 프로토타입 객체는 Object입니다. 따라서 Person 프로토타입의 __proto__ 는 Object 프로토타입을 가리키게 됩니다. &lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;프로토타입은 생성자(constructor)를 꼭 가지고 있습니다. &lt;br /&gt;
+Person과 Object 프로토타입은 각각 생성자를 가지고 있습니다.&lt;/p&gt;
+
+&lt;h3 id=&quot;4-위의-1번에서-언급했던-prototype의-사용-예를-설명드리겠습니다&quot;&gt;4. 위의 1번에서 언급했던 Prototype의 사용 예를 설명드리겠습니다.&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;1.&lt;/strong&gt; jQuery.prototype 에 backgroundCycle이라는 function을 추가 한 것입니다. &lt;br /&gt;
+  그러므로 jQuery 의 내장 함수처럼 backgroundCycle 함수를 사용할 수 있게 됩니다.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;backgroundCycle&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;..&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;코드&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;..&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;strong&gt;2.&lt;/strong&gt; Array.prototype 에 duplicator라는 function을 추가 한 것입니다.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nb&quot;&gt;Array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;duplicator&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;concat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;duplicator&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;출력 결과는  [1, 2, 3, 4, 5, 1, 2, 3, 4, 5] 입니다.
+&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;
+[출처]&lt;br /&gt;
+&lt;a href=&quot;http://insanehong.kr/post/javascript-prototype/&quot;&gt;Object prototype 이해하기&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;https://medium.com/@bluesh55/javascript-prototype-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0-f8e67c286b67&quot;&gt;프로토타입 이해하기&lt;/a&gt;&lt;br /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sun, 22 Apr 2018 11:02:38 +0900</pubDate>
+        <link>http://localhost:4000/javascript-prototype/</link>
+        <guid isPermaLink="true">http://localhost:4000/javascript-prototype/</guid>
+        
+        <category>filter</category>
+        
+        <category>image</category>
+        
+        <category>wordpress</category>
+        
+        
+        <category>Git</category>
+        
+      </item>
+    
+      <item>
+        <title>Jekyll 블로그에 댓글 구현하기</title>
+        <description>&lt;!-- ---
+layout: post
+title: Jekyll 블로그에 댓글 구현하기
+date:   2017-11-28 11:02:38 +0900
+categories: blog jekyll github
+excerpt: Jekyll 블로그에 댓글 서비스인 Disqus를 연동하는 방법을 설명합니다.
+comments: true
+author: Gil Kim
+--- --&gt;
+&lt;p&gt;Jekyll 블로그는 정적 페이지 입니다. 동적 요소인 댓글 구현을 위해 Disqus 서비스를 많이 이용합니다.
+Disqus 서비스를 블로그에 삽입하는 과정을 설명하려고 합니다.
+&lt;br /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;1-disqus-회원가입을-먼저-합니다&quot;&gt;1. Disqus 회원가입을 먼저 합니다.&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://disqus.com&quot;&gt;Disqus 홈페이지&lt;/a&gt;에 회원가입을 하고, [Get Started]를 찾아서 클릭합니다.&lt;/p&gt;
+
+&lt;p&gt;2가지 선택사항 중에 [I Want to Install Disqus on my site] 를 눌러 다음 페이지로 이동합니다.&lt;/p&gt;
+
+&lt;p&gt;WebSite Name과 Category 를 선택하여 입력합니다. (WebSite Name 예시: user@github.io)&lt;/p&gt;
+
+&lt;p&gt;무료로 진행할 경우 [Continue on Basic]을 선택하여 다음으로 이동합니다.&lt;/p&gt;
+
+&lt;p&gt;사용하는 플랫폼을 선택합니다. (이 블로그는 Jekyll 플랫폼을 사용하였습니다.)&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;2-jekyll-install-instructions-을-따라합니다&quot;&gt;2. [Jekyll install instructions] 을 따라합니다.&lt;/h3&gt;
+&lt;p&gt;[Jekyll install instructions]를 해석해보면 아래와 같습니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;strong&gt;&amp;lt;1&amp;gt;&lt;/strong&gt; YAML Front Matter에 &lt;code class=&quot;highlighter-rouge&quot;&gt;comments:true&lt;/code&gt;를 작성합니다.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;na&quot;&gt;layout&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;android-post&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Getting Started with Android Studio&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;comments&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;user-defined-variable&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;This is a text sentence.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;br /&gt;
+ &lt;strong&gt;&amp;lt;2&amp;gt;&lt;/strong&gt; Disqus를 로드할 &lt;strong&gt;Universal Embeded Code&lt;/strong&gt; 를 작성합니다.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;원문&amp;gt;
+In between a {% if page.comments %} and a {% endif %} tag, copy and paste
+the Universal Embed Code in the appropriate template
+where you'd like Disqus to load.
+
+&amp;lt;해석&amp;gt;
+페이지 코멘트 설정이 되어있으면 (if page.comments),
+Disqus를 로드할 **Universal Embeded Code** 를 붙여 넣으면 된다.
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;
+&lt;strong&gt;Universal Embeded Code란?&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Universal Embeded Code 란 사이트에 Disqus를 로드하고 표시하는 JavaScript 코드 입니다.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;
+&lt;strong&gt;Universal Embeded Code 예제&lt;/strong&gt; ( _includes 폴더에 작성된 disqus.html 입니다. )&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt; {% if page.comments %} 
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;disqus_thread&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;script&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// DON'T EDIT BELOW THIS LINE&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;createElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'script'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'https://https-tech-knot-github-io.disqus.com/embed.js'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;setAttribute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'data-timestamp'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Date&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;head&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;appendChild&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;})();&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;noscript&amp;gt;&lt;/span&gt;Please enable JavaScript to view the &lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;https://disqus.com/?ref_noscript&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;comments powered by Disqus.&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&amp;lt;/noscript&amp;gt;&lt;/span&gt;
+ {% endif %} &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;참고로 이 블로그는 _includes폴더에 disqus.html파일을 따로 만들고, 사용할 post페이지에서 include하여 사용하였습니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;
+&lt;em&gt;출처: &lt;a href=&quot;https://help.disqus.com/customer/portal/articles/472097-universal-embed-code&quot;&gt;Universal Embed Code란&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 28 Nov 2017 11:02:38 +0900</pubDate>
+        <link>http://localhost:4000/jekyll-comments/</link>
+        <guid isPermaLink="true">http://localhost:4000/jekyll-comments/</guid>
+        
+        <category>filter</category>
+        
+        <category>image</category>
+        
+        <category>wordpress</category>
+        
+        
+        <category>Git</category>
+        
+      </item>
+    
+      <item>
+        <title>Git관리를 이렇게 해요</title>
+        <description>&lt;!-- ---
+layout: post
+title: Git관리를 이렇게 해요
+date:   2017-11-28 11:02:38 +0900
+categories: blog jekyll github
+excerpt: 안드로이드 프로젝트에서 Git관리를 어떻게 하는지에 대해서 이야기를 합니다.
+comments: true
+author: Gil Kim
+--- --&gt;
+&lt;p&gt;안녕하세요. 오늘 애기할 주제는 안드로이드 스튜디오에서 Git 연동을 어떻게 시작하면 좋을지에 대해서 설명하고자 합니다.
+&lt;br /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;시작에-앞서&quot;&gt;시작에 앞서..&lt;/h2&gt;
+&lt;p&gt;일단 저희 안드로이드 개발팀은 소규모로 구성되어 있습니다. 2명이서 협업을 한 프로젝트도 있지만, 대부분은 1인 1프로젝트로 진행이 됩니다.
+이전에는 Git의 사용용도를 소스 백업정도로 활용해왔습니다. Git의 여러 기능들을 활용하지 않아서 불편했던 점을 개선하고자 Git 사용법을 공부하고 전략을 세우게 되었습니다.
+&lt;br /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;git-flow를-먼저-알고-가자&quot;&gt;Git-flow를 먼저 알고 가자&lt;/h2&gt;
+&lt;p&gt;Git-flow란 Git 브랜치를 효과적으로 나누고 관리하는 전략을 말합니다.
+크게 5가지의 브랜치가 있습니다.
+메인 브랜치로는 master, develop 이 있고, 임시 브랜치로는 feature, release, hotfix가 있습니다. 각 브랜치를 간략하게 설명해보겠습니다.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;master: 최종본 브랜치&lt;/li&gt;
+  &lt;li&gt;develop: 개발 중인 브랜치&lt;/li&gt;
+  &lt;li&gt;feature: 기능 개발용 브랜치&lt;/li&gt;
+  &lt;li&gt;release: 이번 버전 출시용 브랜치&lt;/li&gt;
+  &lt;li&gt;hotfix: relase 후 발생한 버그 수정용 브랜치&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;아래 그림을 함께 보면 이해가 쉽습니다.&lt;/p&gt;
+
+&lt;p&gt;master브랜치로 시작을 하고, develop 브랜치를 만듭니다. develop 브랜치로 작업을 진행하다가 새로운 기능을 넣기위해 feature브랜치를 만들고 작업을 이어갑니다. (기능에 따라서 여러개의 feature브랜치가 생성됩니다.)
+기능이 완료되면 develop 브랜치로 이동해서 feature브랜치를 merge합니다. (브랜치 이동을 checkout이라고 합니다.)
+개발이 완료되고 출시를 하기위해 release브랜치를 만듭니다. QA를 진행하고, 발견된 버그 수정작업을 진행합니다.
+QA를 모두 통과한 후, release 브랜치를 develop 브랜치로 merge하고, 최종적으로 master 브랜치로 merge합니다.
+&lt;br /&gt;&lt;br /&gt;
+&lt;img src=&quot;http://3.bp.blogspot.com/-fn9dkyAGwyg/Vm2yi0CeHyI/AAAAAAAAKVY/Op31eQuKzus/s1600/gitflow_1.png&quot; alt=&quot;git-flow 설명&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;나의-git-전략&quot;&gt;나의 Git 전략&lt;/h2&gt;
+&lt;p&gt;Git을 시작하면 master브랜치만 존재합니다. 나머지 4가지의 브랜치는 임의로 생성하고 명명한 것들입니다. (develop, feature, release, hotfix)
+1인 1프로젝트이고, 개발기간이 주로 2~3개월의 기간인 소규모 프로젝트를 진행하는 입장에서 Git-flow 전략에서 제시한 5가지 브랜치를 모두 이용할 필요는 없다고 판단을 했습니다.
+메인 브랜치로 mater, develop을 사용하고, 필요에 따라서 feature브랜치를 만들어 활용하는 방법을 선택하게 되었습니다.&lt;/p&gt;
+
+&lt;p&gt;원칙적으로 feature은 하나의 기능으로 구성되어 있지만, 필요에 따라서 같은 기능이지만 구현방법에 따라 브랜치를 나눠서 작업을 할 수도 있습니다.
+A라는 기능을 구현하고자 할때, 구현방법은 다양합니다. 예를들어 3가지 방법의 구현방법이 있다고 가정해보겠습니다.
+feature-1, feature-2, feature-3 이렇게 3가지의 feature 브랜치들을 생성하고, 각기 다른 구현방법으로 구현 작업을 진행하였습니다.
+최종적으로 feature-2가 가장 좋은 구현방법이라는 결론을 내리고 feature-2를 develop로 merge시킵니다. 그리고 남아있는 3개의 feature 브랜치들은 삭제를 합니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;다수의-개발자가-협업하는-방법&quot;&gt;다수의 개발자가 협업하는 방법&lt;/h2&gt;
+&lt;p&gt;협업시 업무를 분담해서 서로 다른 기능을 개발하게 됩니다. 이런 경우 상대방의 코드를 건드리거나, 오류있는 코드를 업로드하여  프로젝트를 고장나게 하면 안됩니다. 그러므로 개발 브랜치를 나눠서 작업하거나, 애초에 공통 프로젝트에서 여러갈래의 저장소로 Fork하는 방법이 있습니다.&lt;br /&gt;
+중요한것은 &lt;strong&gt;Pull Request&lt;/strong&gt; 를 사용해야 합니다. Pull Request란 말 그대로 Pull을 요청하는 것입니다. 자신의 코드를 Pull 하기 전에, 팀원들이나 개발팀장에게 먼저 물어보고, 검토를 다 받으면 그때서야 최종 Pull과 함께 Merge를 진행합니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;다수의-개발자가-같은-코드를-수정하여-충돌이-나는-경우도-많다&quot;&gt;다수의 개발자가 같은 코드를 수정하여 충돌이 나는 경우도 많다.&lt;/h2&gt;
+&lt;p&gt;코드의 충돌을 방지하기 위해서는 개발자들은 최대한 작업을 나누어서 진행합니다. 그래도 코드 충돌은 날 수 있습니다.
+그럴경우에는 먼저 최초 Pull Request를 진행한 뒤에, 다음 Pull을 요청할 개발자가 코드를 받고 충돌 코드 영역을 직접 수정한 후에 Pull Request를 합니다.
+충돌 코드 부분에 대해서는 개발팀과 협의를 해서 수정해야 할 부분과 삭제해야 할 부분을 확인하는 과정도 필요합니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;
+[출처]&lt;br /&gt;
+&lt;a href=&quot;http://www.continuousimprover.com/2015/12/why-i-am-abandoning-gitflow.html&quot;&gt;Git-Flow 그림&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;http://woowabros.github.io/experience/2017/10/30/baemin-mobile-git-branch-strategy.html&quot;&gt;우아한형제들 기술블로그&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;http://ourcstory.tistory.com/131&quot;&gt;Fork란 무엇인가&lt;/a&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 28 Nov 2017 11:02:38 +0900</pubDate>
+        <link>http://localhost:4000/git/</link>
+        <guid isPermaLink="true">http://localhost:4000/git/</guid>
+        
+        <category>filter</category>
+        
+        <category>image</category>
+        
+        <category>wordpress</category>
+        
+        
+        <category>Git</category>
+        
+      </item>
+    
+      <item>
         <title>Implement Xmpp Chat Client Android Part 2</title>
         <description>
 </description>
@@ -514,306 +794,6 @@ We also learnt how I made a bare layout which listed all posts within series.&lt
         
         
         <category>Uncategorized</category>
-        
-      </item>
-    
-      <item>
-        <title>Implement XMPP chat client in Android &amp;#8211; Part 1</title>
-        <description>&lt;h2 id=&quot;part-1---xmpp-basics&quot;&gt;Part 1 - XMPP Basics&lt;/h2&gt;
-
-&lt;p&gt;In the &lt;a href=&quot;http://aboutashu.com/blog/xmpp-chat-server/&quot;&gt;last post&lt;/a&gt; of this series, I talked about setting up XMPP based chat server, using ejabberd. In this post, I will be talking about how to implement XMPP chat client in android and let two users talk to each other. After reading this post series, you’ll be able to&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Implement chat system such as whatsapp in your own android app&lt;/li&gt;
-  &lt;li&gt;Allow yourself to chat with online users (roasters)&lt;/li&gt;
-  &lt;li&gt;Making the chat as service so that chat messages still come through even while app is in background&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Since it would be too long to explain everything within a single post, I am going to explain part by part code structure and basics of XMPP here.&lt;/p&gt;
-
-&lt;h2 id=&quot;xmpp-client&quot;&gt;XMPP Client&lt;/h2&gt;
-
-&lt;p&gt;XMPP Clients is a software or application which allows you to connect to XMPP servers for instant messaging with other people. Simple enough!! If you are a frequent internet user, you must’ve used one to many XMPP clients such as pidgin, gtalk, Yahoo! IM etc. which allows you to send Instant Message to other users you are connected to. What we will do this in post is to make one such client in android.&lt;/p&gt;
-
-&lt;h2 id=&quot;what-you-will-need&quot;&gt;What You will need&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;An android IDE for app development. While I prefer &lt;a href=&quot;http://developer.android.com/sdk/index.html&quot;&gt;Android Studio&lt;/a&gt;, &lt;a href=&quot;https://eclipse.org/&quot;&gt;Eclipse&lt;/a&gt; also does the job.&lt;/li&gt;
-  &lt;li&gt;Decent Working internet.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;starting-the-project&quot;&gt;Starting the Project&lt;/h2&gt;
-
-&lt;p&gt;Lets begin!!&lt;/p&gt;
-
-&lt;h4 id=&quot;creating-the-project&quot;&gt;Creating the project:&lt;/h4&gt;
-
-&lt;p&gt;Create a blank project in android studio. Once you get to editor screen, add following dependencies to your app specific &lt;code class=&quot;highlighter-rouge&quot;&gt;build.gradle&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;compile 'org.igniterealtime.smack:smack-android-extensions:4.1.0'
-compile 'org.igniterealtime.smack:smack-tcp:4.1.0'
-compile 'com.google.code.gson:gson:2.6.2'
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;The first two lines are mandatory for getting smack to work on android. The third line (about gson) allows you to convert raw messages in GSON format. Since we will be sending messages in GSON format, I added it to my needs. Check out &lt;a href=&quot;https://github.com/ashutosh2k12/XmppDemo/blob/master/app/build.gradle&quot;&gt;build.gradle&lt;/a&gt; of my app to get an idea.&lt;/p&gt;
-
-&lt;h2 id=&quot;basics&quot;&gt;Basics&lt;/h2&gt;
-
-&lt;p&gt;Before diving straight into the code, lets understand few things about XMPP and in what manner are we going to implement them.&lt;/p&gt;
-
-&lt;h4 id=&quot;what-is-xmpp&quot;&gt;What is XMPP?&lt;/h4&gt;
-
-&lt;p&gt;XMPP is basically a set of protocols (or rules) to allow communication based on XML. Thus, whenever you send a message, or your presence (available, unavailable etc.) to some other user (or server), it goes out in XML format, like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;presence&amp;gt;
-  &amp;lt;show&amp;gt;dnd&amp;lt;/show&amp;gt;
-&amp;lt;/presence&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;But we don’t have to go threw this right now. You just need to know that whenever you are seeing someone online, or sending a message, the client communicates with each other in this mannar. Read more about these &lt;a href=&quot;https://xmpp.org/rfcs/rfc3921.html&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;jabber-id&quot;&gt;Jabber ID&lt;/h4&gt;
-
-&lt;p&gt;Jabber Id or simply JID is a unique ID (just like your username on facebook) which helps you recognize in XMPP environments. Jabber ID is usually in the format &lt;code class=&quot;highlighter-rouge&quot;&gt;username@domain&lt;/code&gt;. Sometimes, you may see your JID in form of &lt;code class=&quot;highlighter-rouge&quot;&gt;username@domain/resource&lt;/code&gt; .Resource is nothing but a string representing your chat environment.&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;username@domain&lt;/code&gt; sometimes is reffered to as &lt;em&gt;Bare JID&lt;/em&gt; while &lt;code class=&quot;highlighter-rouge&quot;&gt;username@domain/resource&lt;/code&gt; as &lt;em&gt;Full JID&lt;/em&gt;.&lt;/p&gt;
-
-&lt;h4 id=&quot;roasters&quot;&gt;Roasters&lt;/h4&gt;
-
-&lt;p&gt;Just like you have facebook friends, that only they can check out your shared items, XMPP too does have this security thing of its own kind. Whenever you gets connected to a XMPP server, few things about you travels along to server. So, for example, whenever you login to your GTalk, or pidgin, you instantly gets this “green”  button to show you are online. You also see your last status that you’ve put up. you see your friendlist and online friends from them.&lt;/p&gt;
-
-&lt;p&gt;The information associated with you, as soon as you login to any XMPP client, includes mainly:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Your presence information (wether you are available or not)&lt;/li&gt;
-  &lt;li&gt;Your status&lt;/li&gt;
-  &lt;li&gt;Whom you are subscribed to (and who subscribed to you)&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;These informations are kept on server in database. XMPP have certain security features that decides who is going to see those informations. For ex, if you are subscribed to User A, and user A is also subscribed to you, then you both can see each other’s presences. However, if only user A has subscribed to you, only you can see his presence.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Roasters&lt;/strong&gt; are people (or group of people) who are subscribed to you (or you are subscribed to them). They are like your friends on facebook, with limited access depending upon the subscription status between you both.&lt;/p&gt;
-
-&lt;p&gt;To put it simply, the online users that you see in your gtalk are roasters. Any user whom you have added as contact on  XMPP clients are roasters.&lt;/p&gt;
-
-&lt;h4 id=&quot;subscriptions&quot;&gt;Subscriptions&lt;/h4&gt;
-
-&lt;p&gt;Subscriptions is one way of saying &lt;em&gt;sending friend requests&lt;/em&gt;. Just like, when you send someone a friend request on facebook, you subscribe to someone on XMPP. You subscribe to someone by sending them a subscription presence packet to their JID. While I will begin with code, I will show you how to send a subscription packets and receive one. Thus, subscription state exists between two users.&lt;/p&gt;
-
-&lt;p&gt;For sake of simplicity, you just need to know that in order to make someone friends on XMPP, or allowing someone to make you a friend, you need subscription.&lt;/p&gt;
-
-&lt;p&gt;Subscriptions have 4 modes: &lt;code class=&quot;highlighter-rouge&quot;&gt;subscribe_none&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;subscribe_to&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;subscribe_from&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;subscribe_both&lt;/code&gt;.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;subscribe_none&lt;/strong&gt; - When you are not subscribed in any way to a given user.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;subscribe_to&lt;/strong&gt; - When only you are subscribed to a given user (one way).&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;subscribe_from&lt;/strong&gt; - When you are not subscribed in any way to a given user.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;subscribe_both&lt;/strong&gt; - When you are not subscribed in any way to a given user.&lt;/li&gt;
-&lt;/ol&gt;
-
-</description>
-        <pubDate>Sun, 01 May 2016 17:39:37 +0900</pubDate>
-        <link>http://localhost:4000/implement-xmpp-chat-client-android-part-1/</link>
-        <guid isPermaLink="true">http://localhost:4000/implement-xmpp-chat-client-android-part-1/</guid>
-        
-        
-        <category>Uncategorized</category>
-        
-      </item>
-    
-      <item>
-        <title>Creating XMPP chat server</title>
-        <description>&lt;p&gt;In this part of series, I am going to show you how to create an XMPP chat server.&lt;/p&gt;
-
-&lt;p&gt;To build your own XMPP based chat solution in android, you need to have two important things:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;XMPP based chat server&lt;/li&gt;
-  &lt;li&gt;XMPP integration in your android code&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;XMPP chat server or XMPP server is the one that handles chat database, configurations, user, options etc. Basically, it is a chat server that handles your chat backend. What remains is to implement the chat in your own language and have fun.&lt;/p&gt;
-
-&lt;p&gt;There are many variations of XMPP chat servers available today. You can use any of them depending on your requirements and available configurations. What I would recommend are &lt;a href=&quot;http://www.igniterealtime.org/projects/openfire/&quot;&gt;openfire&lt;/a&gt; and &lt;a href=&quot;https://www.ejabberd.im/&quot;&gt;ejabberd&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Personally, I am going to use ejabberd to setup XMPP chat server. Let’s get into action. First, you will need a web server.For now, I am using &lt;a href=&quot;https://www.digitalocean.com&quot;&gt;DigitalOcean VPS&lt;/a&gt; with Ubuntu Server 14.04 LTS installed, to host the server. Don’t worry if you do not have a VPS right now. You can still test it with your own localhost machine.&lt;/p&gt;
-
-&lt;h2 id=&quot;installing-ejabberd&quot;&gt;Installing Ejabberd&lt;/h2&gt;
-
-&lt;p&gt;Run following command in your terminal to update current package list.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get update
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;To install &lt;strong&gt;ejabberd&lt;/strong&gt;, just enter the below command and you are done. So easy.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; install ejabberd
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;This will install ejabberd and will also create a configuration file which you can edit to have your own jabberd configuration. The ejabberd configuration file can be found at &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/ejabberd/ejabberd.cfg&lt;/code&gt;. Lets edit it. Back on your terminal screen, enter this command to edit the file:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nano /etc/ejabberd/ejabberd.cfg
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;This will bring up &lt;code class=&quot;highlighter-rouge&quot;&gt;nano&lt;/code&gt; editor, where you can use up and down keys on your keyboard to edit the file. For Ubuntu desktops or other graphical environments, you can use &lt;code class=&quot;highlighter-rouge&quot;&gt;gedit&lt;/code&gt;. Hence, use this command instead &lt;code class=&quot;highlighter-rouge&quot;&gt;sudo gedit /etc/ejabberd/ejabberd.cfg&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;In the editor screen, You’ll see a lot of text there and lot of options. Don’t panic. You only have edit 3-4 options overall. I will be doing them below, so pay attention.&lt;/p&gt;
-
-&lt;p&gt;The ejabberd.cfg file will look something like this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/ejabberd_cfg.png&quot; alt=&quot;ejabberd.cfg&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Use your cursor to move below and find the line which has this text:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;%% Admin user
-{acl, admin, {user, &quot;admin&quot;, &quot;localhost&quot;}}.
-
-%% Hostname
-{hosts, [&quot;localhost&quot;]}.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Lets decode what’s written line by line so that you can get confortable enough to do this on your own next time.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Admin user&lt;/strong&gt; defines what user (user must be registered with ejabberd) holds the administrative privilages of ejabberd server. &lt;code class=&quot;highlighter-rouge&quot;&gt;{acl, admin, {user, &quot;admin&quot;, &quot;localhost&quot;}}.&lt;/code&gt; This line tells that user with username &lt;strong&gt;admin@localhost&lt;/strong&gt; is admin of ejabberd configuration. We can add multiple users here to make them admin. Let’s add one. So, press enter key and add similar line with different username.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{acl, admin, {user, &quot;myusername&quot;, &quot;localhost&quot;}}.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;The file will now look like:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;%% Admin user
-{acl, admin, {user, &quot;admin&quot;, &quot;localhost&quot;}}.
-{acl, admin, {user, &quot;myusername&quot;, &quot;localhost&quot;}}.
-
-%% Hostname
-{hosts, [&quot;localhost&quot;]}.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;You might be wondering the user “myusername” isn’t yet registered with ejabberd, how come we defined here. We will registered him shortly after we are done with editing configuration file.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Hostname&lt;/strong&gt; defines the server at which ejabberd should listen and connect. If you are not using a local machine (i.e you are using VPS such as DigitalOcean) to host the XMPP chat server, you can mention the domain name or IP address here. I am assuming example.com as my VPS domain name, hence I will modify this line as:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{hosts, [&quot;localhost&quot;,&quot;example.com&quot;]}.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Thats all the changes you have to make for now. Wasn’t that simple?
-Once you have made the above changes, the cfg file will now look like:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;%% Options which are set by Debconf and managed by ucf
-
-%% Admin user
-{acl, admin, {user, &quot;admin&quot;, &quot;localhost&quot;}}.
-{acl, admin, {user, &quot;myusername&quot;, &quot;localhost&quot;}}
-
-%% Hostname 
-{hosts, [&quot;localhost&quot;,&quot;example.com&quot;]}. 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Now exit the nano editor by pressing CTRL + X. This will prompt you if you want to overwrite the previous cfg file, press &lt;strong&gt;Y&lt;/strong&gt;, then press Enter again to confirm. This will bring you back to terminal screen.&lt;/p&gt;
-
-&lt;p&gt;We have mentioned that “myusername” is another user holding administrative rights to ejabberd, but we still haven’t registered him yet. Lets register him as well. Enter following command to register:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ejabberdctl register myusername localhost password
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Replace “password” with whatever password you want to use to login. Once you are done with this, You have to re-start your ejabberd server by issuing this command:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;service ejabberd restart
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Congradulations, We have successfully setup our ejabberd chat server. Lets visit the administrative control panel and see what we got there. Fire up your public domain name in your favorite browser on port 5280 to login to ejabberd server: http://example.com:5280 .This will bring up webpage asking you for username and password. Login with username: myusername@localhost, password: whatever you mentioned earlier.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;NOTE&lt;/strong&gt;- The &lt;em&gt;localhost&lt;/em&gt; in above username &lt;em&gt;myusername@localhost&lt;/em&gt; represents domain name of user. If you are not sure, edit &lt;em&gt;ejabberd.cfg&lt;/em&gt; and check for user. The line, for “myusername” looks like &lt;code class=&quot;highlighter-rouge&quot;&gt;{acl, admin, {user, &quot;myusername&quot;, &quot;localhost&quot;}}&lt;/code&gt;, the last part is domain name.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;EDIT&lt;/strong&gt;- For users running on local machines, you can simple use http://localhost:5280. To find your locally accessible ip address, run following command (&lt;code class=&quot;highlighter-rouge&quot;&gt;ipconfig&lt;/code&gt; for windows user):&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ifconfig
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;and look for address in the form &lt;code class=&quot;highlighter-rouge&quot;&gt;192.168.0.xxx&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Once done, following screen will show up:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://assets.digitalocean.com/articles/community/eJabberdAdmin1.png&quot; alt=&quot;ejabberd admin panel&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;You have now successfully installed ejabberd on your machine and can be used to connect to any XMPP based chat client. In the next post, you’ll learn how to implement XMPP chat client in android code. Have fun!!&lt;/p&gt;
-
-&lt;p&gt;Thanks for going threw entire long post. Please like and share if you like the article. Ask anything in comments below.&lt;/p&gt;
-
-&lt;h3 id=&quot;troubleshooting&quot;&gt;Troubleshooting:&lt;/h3&gt;
-
-&lt;p&gt;Sometimes, ejabberd might not open up in your browser and will give &lt;code class=&quot;highlighter-rouge&quot;&gt;Connection timed out&lt;/code&gt; error. It usually happens if firewall is blocking ports on which ejabberd relies for communication stuffs. Usually those ports are 5222, 5269, 5280. You can try opening those ports like I did below:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Enter following commands in terminal:&lt;/li&gt;
-  &lt;li&gt;
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;iptables &lt;span class=&quot;nt&quot;&gt;-A&lt;/span&gt; INPUT &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; tcp &lt;span class=&quot;nt&quot;&gt;--dport&lt;/span&gt; 5222 &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; ACCEPT
-iptables &lt;span class=&quot;nt&quot;&gt;-A&lt;/span&gt; INPUT &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; tcp &lt;span class=&quot;nt&quot;&gt;--dport&lt;/span&gt; 5269 &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; ACCEPT
-iptables &lt;span class=&quot;nt&quot;&gt;-A&lt;/span&gt; INPUT &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; tcp &lt;span class=&quot;nt&quot;&gt;--dport&lt;/span&gt; 5280 &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; ACCEPT
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Open up &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt; file. &lt;code class=&quot;highlighter-rouge&quot;&gt;sudo nano /etc/hosts&lt;/code&gt;  and add your domain name into it (assuming your public ip address is 123.123.10.210) :&lt;/li&gt;
-  &lt;li&gt;
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;123.123.10.210 example.com
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Allow ubuntu firewall&lt;/li&gt;
-  &lt;li&gt;
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;ufw allow 5222
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;ufw allow 5269
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;ufw allow 5280
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;This will open the ports and allow public connections, which should fix the issue.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 30 Apr 2016 19:02:06 +0900</pubDate>
-        <link>http://localhost:4000/xmpp-chat-server/</link>
-        <guid isPermaLink="true">http://localhost:4000/xmpp-chat-server/</guid>
-        
-        
-        <category>Uncategorized</category>
-        
-      </item>
-    
-      <item>
-        <title>Get video links from Coursera</title>
-        <description>&lt;p&gt;I have gone threw coursera classes now and then. What I felt is need for a coursera video downloader. I searched but couldn’t found any good working one.&lt;/p&gt;
-
-&lt;p&gt;Hence here is a small script I developed which would give you all video links from coursera. Here is what you’ll have to do:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Goto your class. For ex- Mine was  &lt;a href=&quot;https://www.coursera.org/course/startup&quot;&gt;https://www.coursera.org/course/startup&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Enroll and go to video lectures from left tab. Here is the screenshot&lt;/li&gt;
-  &lt;li&gt;in chrome, press &lt;kbd&gt;f12&lt;/kbd&gt; to bring up chrome inspector. You can also right click anywhere on webpage and click &lt;strong&gt;inspect element&lt;/strong&gt;. Go to &lt;strong&gt;console&lt;/strong&gt; tab.&lt;/li&gt;
-  &lt;li&gt;Paste the following script into the console:&lt;/li&gt;
-  &lt;li&gt;
-    &lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-      &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ul.course-item-list-section-list &amp;gt; li&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;each&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;link&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;a[data-link-type=&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;lecture:download.mp4&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;]&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;attr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'href'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;link&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-      &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;})(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;jQuery&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Press enter and hopefully, it will parse every video link in the page.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Hope you’ve liked the article and it helped you. Please do comment if I owe any explanations. Share, it might be helpful to others.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 27 Jan 2016 14:50:23 +0900</pubDate>
-        <link>http://localhost:4000/get-video-links-from-coursera/</link>
-        <guid isPermaLink="true">http://localhost:4000/get-video-links-from-coursera/</guid>
-        
-        <category>coursera</category>
-        
-        <category>download</category>
-        
-        <category>javascript</category>
-        
-        <category>jquery</category>
-        
-        
-        <category>Javascript</category>
         
       </item>
     

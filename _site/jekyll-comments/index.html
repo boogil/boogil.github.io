@@ -6,15 +6,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="shortcut icon" href="/static/img/favicon.ico" />
-        <title>Get video links from Coursera - Gil Kim</title>
+        <title>Jekyll 블로그에 댓글 구현하기 - Gil Kim</title>
         <meta name="author" content="Gil Kim" />
-        <meta name="description" content="Get video links from Coursera" />
-        <meta name="keywords" content="Get video links from Coursera, Gil Kim, Javascript" />
+        <meta name="description" content="Jekyll 블로그에 댓글 구현하기" />
+        <meta name="keywords" content="Jekyll 블로그에 댓글 구현하기, Gil Kim, Git" />
 
         <meta content="1159707894060864" property="fb:app_id">
         <meta content="Gil Kim" property="og:site_name">
         
-          <meta content="Get video links from Coursera" property="og:title">
+          <meta content="Jekyll 블로그에 댓글 구현하기" property="og:title">
         
         
           <meta content="article" property="og:type">
@@ -23,10 +23,10 @@
           <meta content="Blog" property="og:description">
         
         
-          <meta content="http://localhost:4000/get-video-links-from-coursera/" property="og:url">
+          <meta content="http://localhost:4000/jekyll-comments/" property="og:url">
         
         
-          <meta content="2016-01-27T14:50:23+09:00" property="article:published_time">
+          <meta content="2017-11-28T11:02:38+09:00" property="article:published_time">
           <meta content="http://localhost:4000/about/" property="article:author">
         
         
@@ -34,28 +34,26 @@
         
         
           
-          <meta content="Javascript" property="article:section">
+          <meta content="Git" property="article:section">
           
         
         
           
-          <meta content="coursera" property="article:tag">
+          <meta content="filter" property="article:tag">
           
-          <meta content="download" property="article:tag">
+          <meta content="image" property="article:tag">
           
-          <meta content="javascript" property="article:tag">
-          
-          <meta content="jquery" property="article:tag">
+          <meta content="wordpress" property="article:tag">
           
         
         <meta name="twitter:card" content="summary">
         <meta name="twitter:site" content="@216ashutosh">
         <meta name="twitter:creator" content="@216ashutosh">
         
-          <meta name="twitter:title" content="Get video links from Coursera">
+          <meta name="twitter:title" content="Jekyll 블로그에 댓글 구현하기">
         
         
-          <meta name="twitter:url" content="http://localhost:4000/get-video-links-from-coursera/">
+          <meta name="twitter:url" content="http://localhost:4000/jekyll-comments/">
         
         
           <meta name="twitter:description" content="Blog">
@@ -147,38 +145,93 @@
 
 
 
-<h1>Get video links from Coursera</h1>
-<span class="time">27 Jan 2016</span>
+<h1>Jekyll 블로그에 댓글 구현하기</h1>
+<span class="time">28 Nov 2017</span>
 
 <span class="categories">
-    &raquo; <a href="/category/Javascript">Javascript</a>
+    &raquo; <a href="/category/Git">Git</a>
 </span>
 
 
 
 <div class="content">
-    <div class="post"><p>I have gone threw coursera classes now and then. What I felt is need for a coursera video downloader. I searched but couldn’t found any good working one.</p>
+    <div class="post"><!-- ---
+layout: post
+title: Jekyll 블로그에 댓글 구현하기
+date:   2017-11-28 11:02:38 +0900
+categories: blog jekyll github
+excerpt: Jekyll 블로그에 댓글 서비스인 Disqus를 연동하는 방법을 설명합니다.
+comments: true
+author: Gil Kim
+--- -->
+<p>Jekyll 블로그는 정적 페이지 입니다. 동적 요소인 댓글 구현을 위해 Disqus 서비스를 많이 이용합니다.
+Disqus 서비스를 블로그에 삽입하는 과정을 설명하려고 합니다.
+<br /></p>
+<h3 id="1-disqus-회원가입을-먼저-합니다">1. Disqus 회원가입을 먼저 합니다.</h3>
+<p><a href="https://disqus.com">Disqus 홈페이지</a>에 회원가입을 하고, [Get Started]를 찾아서 클릭합니다.</p>
 
-<p>Hence here is a small script I developed which would give you all video links from coursera. Here is what you’ll have to do:</p>
+<p>2가지 선택사항 중에 [I Want to Install Disqus on my site] 를 눌러 다음 페이지로 이동합니다.</p>
 
-<ul>
-  <li>Goto your class. For ex- Mine was  <a href="https://www.coursera.org/course/startup">https://www.coursera.org/course/startup</a></li>
-  <li>Enroll and go to video lectures from left tab. Here is the screenshot</li>
-  <li>in chrome, press <kbd>f12</kbd> to bring up chrome inspector. You can also right click anywhere on webpage and click <strong>inspect element</strong>. Go to <strong>console</strong> tab.</li>
-  <li>Paste the following script into the console:</li>
-  <li>
-    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">){</span>
-      <span class="nx">$</span><span class="p">(</span><span class="s2">"ul.course-item-list-section-list &gt; li"</span><span class="p">).</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-        <span class="kd">var</span> <span class="nx">link</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s2">"a[data-link-type=</span><span class="se">\"</span><span class="s2">lecture:download.mp4</span><span class="se">\"</span><span class="s2">]"</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'href'</span><span class="p">);</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">link</span><span class="p">)</span>
-      <span class="p">});</span>
-    <span class="p">})(</span><span class="nx">jQuery</span><span class="p">);</span>
-</code></pre></div>    </div>
-  </li>
-  <li>Press enter and hopefully, it will parse every video link in the page.</li>
-</ul>
+<p>WebSite Name과 Category 를 선택하여 입력합니다. (WebSite Name 예시: user@github.io)</p>
 
-<p>Hope you’ve liked the article and it helped you. Please do comment if I owe any explanations. Share, it might be helpful to others.</p>
+<p>무료로 진행할 경우 [Continue on Basic]을 선택하여 다음으로 이동합니다.</p>
+
+<p>사용하는 플랫폼을 선택합니다. (이 블로그는 Jekyll 플랫폼을 사용하였습니다.)</p>
+
+<p><br /></p>
+<h3 id="2-jekyll-install-instructions-을-따라합니다">2. [Jekyll install instructions] 을 따라합니다.</h3>
+<p>[Jekyll install instructions]를 해석해보면 아래와 같습니다.</p>
+
+<p><br />
+<strong>&lt;1&gt;</strong> YAML Front Matter에 <code class="highlighter-rouge">comments:true</code>를 작성합니다.</p>
+
+<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="na">layout</span><span class="pi">:</span> <span class="s">android-post</span>
+<span class="na">title</span><span class="pi">:</span> <span class="s">Getting Started with Android Studio</span>
+<span class="na">comments</span><span class="pi">:</span> <span class="no">true</span>
+<span class="na">user-defined-variable</span><span class="pi">:</span> <span class="s">This is a text sentence.</span></code></pre></figure>
+
+<p><br />
+ <strong>&lt;2&gt;</strong> Disqus를 로드할 <strong>Universal Embeded Code</strong> 를 작성합니다.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;원문&gt;
+In between a {% if page.comments %} and a {% endif %} tag, copy and paste
+the Universal Embed Code in the appropriate template
+where you'd like Disqus to load.
+
+&lt;해석&gt;
+페이지 코멘트 설정이 되어있으면 (if page.comments),
+Disqus를 로드할 **Universal Embeded Code** 를 붙여 넣으면 된다.
+
+</code></pre></div></div>
+<p><br />
+<strong>Universal Embeded Code란?</strong></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Universal Embeded Code 란 사이트에 Disqus를 로드하고 표시하는 JavaScript 코드 입니다.
+</code></pre></div></div>
+<p><br />
+<strong>Universal Embeded Code 예제</strong> ( _includes 폴더에 작성된 disqus.html 입니다. )</p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"> {% if page.comments %} 
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"disqus_thread"</span><span class="nt">&gt;&lt;/div&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+
+<span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// DON'T EDIT BELOW THIS LINE</span>
+<span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="nb">document</span><span class="p">,</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">d</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">'script'</span><span class="p">);</span>
+<span class="nx">s</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="s1">'https://https-tech-knot-github-io.disqus.com/embed.js'</span><span class="p">;</span>
+<span class="nx">s</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s1">'data-timestamp'</span><span class="p">,</span> <span class="o">+</span><span class="k">new</span> <span class="nb">Date</span><span class="p">());</span>
+<span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">head</span> <span class="o">||</span> <span class="nx">d</span><span class="p">.</span><span class="nx">body</span><span class="p">).</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">s</span><span class="p">);</span>
+<span class="p">})();</span>
+<span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;noscript&gt;</span>Please enable JavaScript to view the <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"https://disqus.com/?ref_noscript"</span><span class="nt">&gt;</span>comments powered by Disqus.<span class="nt">&lt;/a&gt;&lt;/noscript&gt;</span>
+ {% endif %} </code></pre></figure>
+
+<p><br /></p>
+
+<p>참고로 이 블로그는 _includes폴더에 disqus.html파일을 따로 만들고, 사용할 post페이지에서 include하여 사용하였습니다.</p>
+
+<p><br />
+<em>출처: <a href="https://help.disqus.com/customer/portal/articles/472097-universal-embed-code">Universal Embed Code란</a></em></p>
+
+<p><br /></p>
 </div>
 
     
@@ -197,7 +250,7 @@
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 
 <!-- Facebook -->
-<div class="fb-share-button" data-href="http://localhost:4000/get-video-links-from-coursera/" data-layout="button_count" style="position: relative; top: -8px; left: 3px;"></div>
+<div class="fb-share-button" data-href="http://localhost:4000/jekyll-comments/" data-layout="button_count" style="position: relative; top: -8px; left: 3px;"></div>
 </div>
 <div id="fb-root"></div>
 <script>(function(d, s, id) {
@@ -227,36 +280,19 @@
     
         
             
-        
-    
-
-    
-    
-        
-            
-        
-    
-
-    
-    
-        
-            
-        
-    
-
-    
-    
-
-    
-    
-        
-            
-        
-    
-
-    
-    
-        
+                
+                <div class="panel-body">
+                <h4>Related Posts</h4>
+                <ul>
+                
+                <li class="relatedPost">
+                    <a href="http://localhost:4000/javascript-prototype/">Javascript에서 Prototype이란?</a>
+                    
+                        (Categories: <a href="/category/Git">Git</a>)
+                    
+                </li>
+                
+                
             
         
     
@@ -272,21 +308,20 @@
     
         
             
-        
-    
-
-    
-    
-        
+                
+                <li class="relatedPost">
+                    <a href="http://localhost:4000/git/">Git관리를 이렇게 해요</a>
+                    
+                        (Categories: <a href="/category/Git">Git</a>)
+                    
+                </li>
+                
+                
             
         
     
 
     
-    
-        
-            
-        
     
 
     
@@ -316,6 +351,37 @@
             
         
     
+
+    
+    
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+    
+
+    
+    
+        
+            
+        
+    
+
+    
+    
         
             
         
@@ -338,6 +404,10 @@
             
         
     
+        
+            
+        
+    
 
     
     
@@ -346,14 +416,24 @@
         
     
 
+    
+    
+        
+            
+        
+    
+
+
+    </ul>
+    </div>
 
 
 <div class="PageNavigation">
   
-    <a class="prev" href="/how-to-download-multiple-videos-from-youtube-dl/">&laquo; How to download multiple videos from youtube-dl</a>
+    <a class="prev" href="/git/">&laquo; Git관리를 이렇게 해요</a>
   
   
-    <a class="next" href="/xmpp-chat-server/">Creating XMPP chat server &raquo;</a>
+    <a class="next" href="/javascript-prototype/">Javascript에서 Prototype이란? &raquo;</a>
   
 </div>
 
@@ -364,8 +444,8 @@
         /* <![CDATA[ */
 
         var disqus_shortname = "boogil";
-        var disqus_identifier = "http://localhost:4000_Get video links from Coursera";
-        var disqus_title = "Get video links from Coursera";
+        var disqus_identifier = "http://localhost:4000_Jekyll 블로그에 댓글 구현하기";
+        var disqus_title = "Jekyll 블로그에 댓글 구현하기";
 
         /* * * DON'T EDIT BELOW THIS LINE * * */
         (function() {
