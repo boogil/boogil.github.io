@@ -34,12 +34,14 @@ tags:
 }
 </style>
 
+<br>
 봐도봐도 까먹고, 조금 안사용하면 또 까먹게 되는!! <br>
 Android에서 UI Thread가 어떻게 도는지, 그리고 직접 작성한 Custom Thread에서 UI 처리는 어떻게 하는지 알아보자. <br>
 <img src="/assets/android_thread/erase-in-my-hair.png" style="width:200px; margin:20px;" />
 <br>
-### 1. UI 스레드 구성
-**1.** 구성도
+### 1. UI 스레드 구성<br><br>
+
+<구성도>
 <br><img src="/assets/android_thread/ui-thread.png" style="width:100%; " /><br>
 
 *Thread*, *Message Queue*, *Looper*, *Handler* 에 대해서 알아야 한다.  <br><br>
@@ -62,16 +64,21 @@ Message Queue의 내용을 순차적으로 꺼내서 Handler에게 전달해 준
 <br><br>
 자 이제 이 4가지 요소들이 어떻게 돌고 도는건지 이해를 했는가?
 
-### 2. Custom Thread에서 UI를 변경하기
+<br>
+### 2. Custom Thread에서 UI를 변경하기 <br><br>
+
 **1.** 우리는 무심코 Thread를 만들고 UI변경 코드를 넣었다가 런타임 에러를 만난적이 있을 것이다.<br> (컴파일러가 해당 에러를 찾아주지 않아서 초보자가 자주 하는 실수이다.)
+{% highlight JavaScript %}
+android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views.
+{% endhighlight %}
 <br>
 왜 에러가 났을까?<br>
 에러 메시지를 확인 해보면, Main Thread에서 만 Ui 처리를 할 수 있다고 한다.
 왜 그렇게 만들었을까? <br>
-스레드가 병렬처리를 한다고 해도, 같은 자원을 동시에 처리하지 않는다는 100% 보장은 없다.
-하나의 TextView의 내용을 바꾸는 스레드가 여러개 있다고 해보자. 어떤 스레드가 먼저 시작하고 먼저 끝날지도 모르고, 동시에 내용을 바꿀 수 도 있고, 또는 TextView를 바꾸고 있는 사이에 바꾸라고 처리를 할 수도 있다. <br>
-그래서! 각 UI 작업들을 일렬로 대기시키고, 하나씩 실행한다면 모든 문제는 해결된다.<br><br>
-따라서, UI 변경 Task들은 Main Thread의 Message Queue에 순차적으로 쌓이게 된다.
+스레드가 병렬처리를 한다고 해도, 같은 자원을 동시에 처리하지 않는다는 100% 보장은 없다.<br><br>
+하나의 TextView의 내용을 바꾸는 스레드가 여러개 있다고 해보자. 어떤 스레드가 먼저 시작하고 먼저 끝날지도 모르고, 동시에 내용을 바꿀 수 도 있고, 또는 TextView를 바꾸고 있는 사이에 바꾸라고 처리를 할 수도 있다. <br><br>
+**그래서! 각 UI 작업들을 일렬로 대기시키고, 하나씩 실행한다면 모든 문제는 해결된다.**<br>
+따라서, UI 변경 Task들은 Main Thread의 Message Queue에 순차적으로 쌓이게 된다.<br><br>
 <div class="img-wrapper" >
 <img src="/assets/android_thread//cut-in-line.gif" style="" />
 <span><strong>UI를 바꾸고싶으면 줄을 서시오..</strong></span>
@@ -83,11 +90,7 @@ Message Queue의 내용을 순차적으로 꺼내서 Handler에게 전달해 준
 
 
 
-{% highlight JavaScript %}
-$.fn.backgroundCycle = function(options) {
-  .. 코드 ..
-}
-{% endhighlight %}
+
 
 
 
