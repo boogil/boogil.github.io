@@ -1,6 +1,6 @@
 ---
-id: 148
-title: Lamda! 넌 누구냐
+id: 146
+title: Android UI Thread와 Custom Thread에서의 UI 처리
 date:   2018-04-22 11:02:38 +0900
 comments: true
 author: Gil Kim
@@ -11,10 +11,11 @@ views:
 dsq_thread_id:
 - 4806778517
 categories:
-- kotlin
+- Git
 tags:
-- lamda
-- kotlin
+- filter
+- image
+- wordpress
 sitemap :
   changefreq : daily
   priority : 1.0
@@ -37,9 +38,9 @@ sitemap :
 </style>
 
 <br>
-Kotlin으로 갈아탔더니.. Lamda를 안할래야 안 할 수가없다. <br>
-Lamda를 왜쓰는지, 주관적인 장/단점이 무었인지 알아보자. <br>
-<!-- <img src="/assets/android_thread/erase-in-my-hair.png" style="width:200px; margin:20px;"/> -->
+봐도봐도 까먹고, 조금 안사용하면 또 까먹게 되는!! <br>
+Android에서 UI Thread가 어떻게 도는지, 그리고 직접 작성한 Custom Thread에서 UI 처리는 어떻게 하는지 알아보자. <br>
+<img src="/assets/android_thread/erase-in-my-hair.png" style="width:200px; margin:20px;"/>
 <br>
 ### 1. UI 스레드 구성<br><br>
 
