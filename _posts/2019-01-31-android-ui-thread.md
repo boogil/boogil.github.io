@@ -141,8 +141,9 @@ onPostExecute() 함수에 UI 작업 코드를 넣으면 된다.  <br><br>
 문제가 발생할 수 있다. (왜냐? 페이지 수가 몇백이 넘어갈 수 있자나~)
 <br><br>
 
-뭐, 나름 Thread에 대해서 정리해 봤어<br>
-질문이나 문제제기는 언제든 한영이니.. 그럼 안녕
+***마무리***
+뭐, 나름 Thread에 대해서 정리해 봤다.<br>
+질문이나 문제제기는 언제든 한영이니.. 사요나라
 <br><br>
 [출처]<br>
 [다른 스레드에서 UI 처리하는 방법](https://devlab.neonkid.xyz/posts/android/Android,-%EB%8B%A4%EB%A5%B8-%EC%93%B0%EB%A0%88%EB%93%9C%EC%97%90%EC%84%9C-UI-%EC%B2%98%EB%A6%AC%EB%A5%BC-%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95.html)<br>
