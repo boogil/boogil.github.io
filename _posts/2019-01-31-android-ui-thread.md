@@ -16,6 +16,9 @@ tags:
 - filter
 - image
 - wordpress
+sitemap :
+  changefreq : daily
+  priority : 1.0
 ---
 <style>
 .img-wrapper::before
